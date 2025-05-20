@@ -1,15 +1,21 @@
-% Boresight and lever arm calibration using spherical targets
+% Match VLP-16 data with SBET (trajectory)
 %
 % Input:
 % sphere_struct: struct containing spherical target information
-%   nominal_boresight_degrees: 
-%       initial values for the boresight angles
-%   nominal_lever_arm:
-%       initial values for the lever arm
+%   sbet: 
+%       table containing Smoothed Best Estimated Trajectory
+%   accuracy:
+%       table containing SBET accuracy
+%   vlp:
+%       table containging VLP-16 data
+%   vlp_accuracy:
+%       estimation of VLP-16 accuracy
 %
 % Output:
-%   calibrated_boresight_lever_arm:
-%       calibrated boresight angles and lever arm
+%   sbet_lidar:
+%       table containing matched lidar and SBET data
+%   intensity:
+%       intensity
 %
 % Jordan McManus (2025)
 function [sbet_lidar, intensity] = match_raw_vlp16_sbet_accuracy(sbet, accuracy, vlp, vlp_accuracy)
