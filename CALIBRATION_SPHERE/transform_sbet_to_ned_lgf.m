@@ -11,10 +11,10 @@ function [sbet_ned, conversion_struct] = transform_sbet_to_ned_lgf(sbet, llh_0)
     %% Transform trajectory to cartesian coordinates ECEF
     pointsECEF = getPositionECEF(sbet(:,2:4)).';
     
-    %% Transform trajectory to cartesian coordinates NWU
+    %% Transform trajectory to cartesian coordinates NED
     points_ned = (ecef2ned*bsxfun(@minus, pointsECEF, originECEF)).';
     
-    %% Express trajectory in NWU
+    %% Express trajectory in NED
     sbet_ned = [sbet(:,1), points_ned, sbet(:,5:end)];
     
     %% Store conversion data (this allows to convert back to geodetic coordinates)
