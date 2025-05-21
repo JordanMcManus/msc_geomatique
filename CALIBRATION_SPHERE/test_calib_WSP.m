@@ -44,11 +44,11 @@ load(sphere_1_filename);
 sphere_2_filename = 'sphere_WSP_2.mat';
 load(sphere_2_filename);
 
-%% vlp accuracy TODO: must calculated during cartesian conversion
+%% vlp accuracy TODO: must be calculated during cartesian conversion
 % for now estimate x, y, z accuracies to 15 mm
 vlp_accuracy = [0.015, 0.015 0.015];
 
-%% sphere and plane structures
+%% sphere structure
 sphere_struct = {};
 sphere_struct.num_spheres = 2;
 
