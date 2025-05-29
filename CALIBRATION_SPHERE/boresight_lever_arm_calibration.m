@@ -1,7 +1,8 @@
 % Boresight and lever arm calibration using spherical targets
 %
 % Input:
-% sphere_struct: struct containing spherical target information
+%   sphere_struct: 
+%       spherical target information
 %   nominal_boresight_degrees: 
 %       initial values for the boresight angles
 %   nominal_lever_arm:
@@ -13,7 +14,7 @@
 %
 % Jordan McManus (2025)
 
-function calibrated_boresight_lever_arm = boresight_lever_arm_calibration(sphere_struct, nominal_boresight_degrees, nominal_lever_arm)
+function [calibrated_boresight_degrees, calibrated_lever_arm] = boresight_lever_arm_calibration(sphere_struct, nominal_boresight_degrees, nominal_lever_arm)
     assert(length(nominal_boresight_degrees) == 3, 'Number of boresight angles should be 3');
     assert(length(nominal_lever_arm) == 3, 'Number of lever arm components should be 3');
     
@@ -44,12 +45,16 @@ function calibrated_boresight_lever_arm = boresight_lever_arm_calibration(sphere
             cost = cost + sum(residuals);
         end
         
-        disp(['Done iteration: ' num2str(iteration_counter)]);
+        %disp(['Done iteration: ' num2str(iteration_counter)]);
         iteration_counter = iteration_counter + 1;
     end
 
     OPTIONS.MaxFunEvals = 5000;
     OPTIONS.MaxIter = 5000;
     initial_X = [nominal_boresight_degrees, nominal_lever_arm];
-    calibrated_boresight_lever_arm = (fminsearch(@f, initial_X, OPTIONS));
+    calibrated_X = (fminsearch(@f, initial_X, OPTIONS));
+    disp(['Total number of iterations: ', num2str(iteration_counter-1)]);
+    
+    calibrated_boresight_degrees = calibrated_X(1:3);
+    calibrated_lever_arm = calibrated_X(4:6);
 end

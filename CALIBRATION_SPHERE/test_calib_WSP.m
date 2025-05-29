@@ -4,7 +4,12 @@ clc;
 %% load sbet
 sbet_filename = 'sbet_calib_port_quebec_WSP.out';
 sbet = readSBET(sbet_filename);
-disp(['load sbet file: ' sbet_filename])
+disp(['SBET file: ' sbet_filename])
+
+%% load SMRMSG
+smrmsg_filename = 'smrmsg_calib_port_quebec_WSP.out';
+[~, sbet_accuracy] = readPosPacAccuracy(smrmsg_filename);
+disp(['SMRMSG: ' smrmsg_filename])
 
 %% llh = latitude longitude height
 % Can use any point, for example:
@@ -20,10 +25,7 @@ disp(['Height: ' num2str(llh_0(3), 15)]);
 %% LGF NED conversion
 [sbet_ned, conversion_struct] = transform_sbet_to_ned_lgf(sbet, llh_0);
 
-%% load SMRMSG
-smrmsg_filename = 'smrmsg_calib_port_quebec_WSP.out';
-[~, sbet_accuracy] = readPosPacAccuracy(smrmsg_filename);
-disp(['load SMRMSG: ' smrmsg_filename])
+
 
 %% generate points on spheres with known center and radius for visualisation
 c1_trx = [1409031.843, -4139132.975, 4627982.702];
@@ -78,9 +80,11 @@ writeMatrixCsv('wsp_matched_georef_s1.txt', georef_ned_s1);
 writeMatrixCsv('wsp_matched_georef_s2.txt', georef_ned_s2);
 
 %% calibration
-calibrated_boresight_lever_arm = boresight_lever_arm_calibration(sphere_struct, nominal_boresight_degrees, nominal_lever_arm)
-calibrated_boresight_degrees = calibrated_boresight_lever_arm(1:3);
-calibrated_lever_arm = calibrated_boresight_lever_arm(4:6);
+[calibrated_boresight_degrees, calibrated_lever_arm] = boresight_lever_arm_calibration(sphere_struct, nominal_boresight_degrees, nominal_lever_arm);
+disp('calibrated_boresight_degrees [roll pitch heading]:');
+disp(calibrated_boresight_degrees); % [roll pitch heading]
+disp('calibrated_lever_arm:');
+disp(calibrated_lever_arm);
 
 %% georef after calibration
 calib_georef_ned_s1 = regeoref_ned(sbet_lidar_1, calibrated_boresight_degrees, calibrated_lever_arm);
