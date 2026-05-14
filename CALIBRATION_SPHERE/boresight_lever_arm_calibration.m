@@ -51,6 +51,7 @@ function [calibrated_boresight_degrees, calibrated_lever_arm] = boresight_lever_
 
     OPTIONS.MaxFunEvals = 5000;
     OPTIONS.MaxIter = 5000;
+    OPTIONS.Display = 'iter';
     initial_X = [nominal_boresight_degrees, nominal_lever_arm];
     calibrated_X = (fminsearch(@f, initial_X, OPTIONS));
     disp(['Total number of iterations: ', num2str(iteration_counter-1)]);
